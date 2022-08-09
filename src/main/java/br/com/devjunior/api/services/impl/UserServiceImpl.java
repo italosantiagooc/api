@@ -1,9 +1,12 @@
 package br.com.devjunior.api.services.impl;
 
 import br.com.devjunior.api.models.User;
+import br.com.devjunior.api.models.dtos.UserDto;
 import br.com.devjunior.api.repositories.UserRepository;
 import br.com.devjunior.api.services.UserService;
+import br.com.devjunior.api.services.exceptions.DataIntegrityViolationException;
 import br.com.devjunior.api.services.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +17,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private final ModelMapper modelMapper;
+
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -27,5 +33,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User create(UserDto dto) {
+        findByEmail(dto);
+        return userRepository.save(modelMapper.map(dto, User.class));
+    }
+
+    private void findByEmail(UserDto userDto) {
+        Optional<User> user = userRepository.findByEmail(userDto.getEmail());
+        if (user.isPresent()) {
+            throw new DataIntegrityViolationException("E-mail already registered");
+        }
     }
 }
