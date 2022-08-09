@@ -11,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @Entity
+@Table(name = "TB_USERS")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +20,7 @@ public class User implements Serializable {
     private Integer id;
     private String name;
 
-    @Column(unique = true)
+    //@Column(unique = true)
     private String email;
     private String password;
 }
