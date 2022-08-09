@@ -41,4 +41,14 @@ public class UserController {
                 .buildAndExpand(userService.create(userDto).getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDto> update(@PathVariable Integer id, @RequestBody UserDto userDto) {
+        UserDto newUserDto = new UserDto(userService.update(id, userDto));
+        return ResponseEntity.ok().body(newUserDto);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

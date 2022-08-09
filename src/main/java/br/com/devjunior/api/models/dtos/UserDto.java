@@ -1,5 +1,6 @@
 package br.com.devjunior.api.models.dtos;
 
+import br.com.devjunior.api.models.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +19,11 @@ public class UserDto {
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+    }
 }
