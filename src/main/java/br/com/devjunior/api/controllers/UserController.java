@@ -43,8 +43,8 @@ public class UserController {
     }
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserDto> update(@PathVariable Integer id, @RequestBody UserDto userDto) {
-        UserDto newUserDto = new UserDto(userService.update(id, userDto));
-        return ResponseEntity.ok().body(newUserDto);
+        userDto.setId(id);
+        return ResponseEntity.ok().body(modelMapper.map(userService.update(userDto), UserDto.class));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
