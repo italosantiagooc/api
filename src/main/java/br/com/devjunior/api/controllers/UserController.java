@@ -2,7 +2,6 @@ package br.com.devjunior.api.controllers;
 
 import br.com.devjunior.api.models.dtos.UserDto;
 import br.com.devjunior.api.services.UserService;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
