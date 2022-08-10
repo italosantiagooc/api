@@ -1,8 +1,8 @@
 package br.com.devjunior.api.controllers;
 
-import br.com.devjunior.api.models.User;
 import br.com.devjunior.api.models.dtos.UserDto;
 import br.com.devjunior.api.services.UserService;
+import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/users")
 public class UserController {
 
+    private static final String ID = "/{id}";
     private final UserService userService;
-
     private final ModelMapper modelMapper;
 
     public UserController(UserService userService, ModelMapper modelMapper) {
@@ -25,7 +25,7 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = ID)
     public ResponseEntity<UserDto> findById(@PathVariable Integer id) {
         return ResponseEntity.ok().body(modelMapper.map(userService.findById(id), UserDto.class));
     }
@@ -41,13 +41,13 @@ public class UserController {
                 .buildAndExpand(userService.create(userDto).getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = ID)
     public ResponseEntity<UserDto> update(@PathVariable Integer id, @RequestBody UserDto userDto) {
         userDto.setId(id);
         return ResponseEntity.ok().body(modelMapper.map(userService.update(userDto), UserDto.class));
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    @DeleteMapping(value = ID)
+    public ResponseEntity<UserDto> delete(@PathVariable Integer id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
